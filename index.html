@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="UTF-8">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <ul v-if="addButton == true" class="clientInformationList">
+        <li> <input type="text" placeholder="Podaj imię" v-model="clientInformation.name"></li>
+        <li> <input type="text" placeholder="Podaj nazwisko" v-model="clientInformation.surname"></li>
+        <li> <input type="text" placeholder="Podaj samochód służbowy" v-model="clientInformation.car"></li>
+        <!-- <li v-model="client"> <input type="text" placeholder="Podaj ostatnie zakupy"></li>
+        <li v-model="client"> <input type="text" placeholder="Podaj "></li>
+        <li v-model="client"> <input type="text" placeholder="Podaj"></li> -->
+    </ul>
+    <div class="searchDiv" v-if="searchButton == true ">
+        <ul class="clientList">
+            <li v-for="(client, index) in (searchClient === '' ? clients : filteredClients) " :key="index"
+                @click="showOtherInformation = !showOtherInformation">
+                <p>{{index + 1
+                    }}. {{client.name.charAt(0).toUpperCase() + client.name.slice(1)}}
+                    {{client.surname.charAt(0).toUpperCase() + client.surname.slice(1)}} <span
+                        v-if="showOtherInformation == true"> {{client.car.charAt(0).toUpperCase() +
+                        client.car.slice(1)}}</span></p>
+            </li>
+        </ul>
+        <input type="text" class="confirmButton" v-model="searchClient" placeholder="szukaj klienta">
+    </div>
+    <div class="buttons">
+        <button v-if="addButton == true" @click="addClient(), 
+        addButton = false, 
+        cancelButton = false , 
+        clientListButton = true, 
+        newClientButton = true"> Dodaj </button>
+        <button v-if=" newClientButton == true" @click="addButton = true, 
+            clientListButton = false, 
+            newClientButton = false, 
+            cancelButton = true"> Nowy Klient</button>
+        <button v-if="clientListButton == true" @click="addButton = false, 
+            cancelButton = true, 
+            newClientButton  = false, 
+            searchButton = true,
+            clientListButton = false ">Lista Klientów</button>
+        <button v-if="searchButton == true" @click="filterClients"> Szukaj </button>
+        <button v-if="searchButton == true" @click="deleteClient()"> Usuń</button>
+        <button v-if="cancelButton == true" @click="addButton = false, 
+            clientListButton = true, 
+            newClientButton = true, 
+            cancelButton = false, 
+            confirmButton = false,
+            searchButton = false "> Anuluj</button>
+    </div>
+    <!-- <p> {{ clients }}</p> -->
+    <!-- <ul>
+        
+    </ul> -->
+
+
+    <script>
+        Vue.createApp({
+            data() {
+                return {
+                    addButton: false,
+                    newClientButton: true,
+                    clientListButton: true,
+                    cancelButton: false,
+                    searchButton: false,
+                    searchClient: '',
+                    showAll: true,
+                    showOtherInformation: false,
+                    clientInformation: {
+                        name: '',
+                        surname: '',
+                        car: ''
+                    },
+                    clients: []
+                }
+            },
+            methods: {
+                addClient() {
+                    this.clients.push(this.clientInformation)
+                    this.clientInformation = {
+                        name: '',
+                        surname: '',
+                        car: ''
+                    }
+                    this.addButton = 0
+                },
+                deleteClient() {
+                    const index = this.filteredClients.findIndex(client => client.name.toLowerCase() === this.searchClient.toLowerCase())
+                    if (index !== -1) {
+                        this.clients.splice(index, 1)
+                    }
+                    this.clientInformation = {
+                        name: '',
+                        surname: '',
+                        car: ''
+                    }
+                    this.addButton = 0
+                },
+                filterClients() {
+                    if (this.searchClient === '') {
+                        this.showAll = true
+                    }
+                    else {
+                        this.showAll = false
+                    }
+                }
+            },
+            computed: {
+                filteredClients() {
+                    return this.clients.filter(client => {
+                        return this.showAll || client.name.toLowerCase().includes(this.searchClient.toLowerCase())
+                    })
+                }
+
+            }
+        }).mount('body')
+    </script>
+</body>
+
+</html>

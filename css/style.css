@@ -1,0 +1,49 @@
+*{
+    background-color: #252c57;
+}
+
+.buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+button{
+    background-color: #fada28;
+    height: 50px;
+    width: 100px;
+}
+.searchDiv{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 1px;
+}
+.clientList {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    list-style-type: none;
+    margin-right: 240px;
+    font-size: 20px;
+    color: #00d9ff;
+
+}
+input{
+    width: 300px;
+    height: 50px;
+    background-color: rgba(17, 255, 69, 0.829);
+}
+
+.clientInformationList{
+    display: flex;
+    list-style-type: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
